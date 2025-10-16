@@ -1,0 +1,26 @@
+# Ignorar archivos de build
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignorar archivos de IDEs
+.idea/
+.vscode/
+*.iml
+
+# Ignorar sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar migraciones (si no quieres subirlas)
+src/main/resources/db/migration/
+
+# Ignorar pom.xml si no quieres subirlo
+pom.xml
+
+# Ignorar archivos de configuración local
+application.properties
+application.yml
+

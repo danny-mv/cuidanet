@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { addUser, getUsers } from '../lib/dummy-data';
 
 interface RegistroProps {
   onNavigateToLogin: () => void;
@@ -9,8 +10,9 @@ const Registro = ({ onNavigateToLogin }: RegistroProps) => {
     fullName: '',
     email: '',
     password: '',
-    userType: ''
+    userType: 'paciente' as 'paciente' | 'profesional'
   });
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,12 +24,32 @@ const Registro = ({ onNavigateToLogin }: RegistroProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Datos del formulario:', formData);
+    const users = getUsers();
+    if (users.find(user => user.email === formData.email)) {
+      alert('El correo electrónico ya está en uso.');
+      return;
+    }
+    addUser(formData);
+    setRegistrationSuccess(true);
   };
 
   const handleLoginNavigation = () => {
     onNavigateToLogin();
   };
+
+  if (registrationSuccess) {
+    return (
+      <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden text-slate-800 dark:text-slate-200">
+        <div className="flex h-full grow flex-col items-center justify-center">
+          <h2 className="text-2xl font-bold mb-4">¡Registro exitoso!</h2>
+          <p className="mb-4">Ahora puedes iniciar sesión con tu nueva cuenta.</p>
+          <button onClick={handleLoginNavigation} className="flex min-w-[84px] items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors cursor-pointer">
+            Ir a Iniciar Sesión
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden text-slate-800 dark:text-slate-200">

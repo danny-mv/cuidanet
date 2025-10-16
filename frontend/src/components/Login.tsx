@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getUsers } from '../lib/dummy-data';
 
 interface LoginProps {
   onNavigateToRegistro: () => void;
@@ -21,7 +22,17 @@ const Login = ({ onNavigateToRegistro }: LoginProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Datos del login:', formData);
+    const users = getUsers();
+    const user = users.find(
+      (u) => u.email === formData.email && u.password === formData.password
+    );
+
+    if (user) {
+      console.log('Login exitoso para:', user);
+      alert('¡Inicio de sesión exitoso!');
+    } else {
+      alert('Correo electrónico o contraseña incorrectos.');
+    }
   };
 
   return (
